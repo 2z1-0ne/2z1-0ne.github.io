@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
   <title>SAP-Refiner | Master's Thesis</title>
 
   <style>
@@ -23,10 +24,6 @@
       padding: 0;
     }
 
-    html {
-      scroll-behavior: smooth;
-    }
-
     body {
       font-family: Arial, Helvetica, sans-serif;
       background: var(--bg);
@@ -37,7 +34,7 @@
     header {
       background: linear-gradient(135deg, var(--primary-dark), var(--primary));
       color: white;
-      padding: 72px 24px 64px;
+      padding: 70px 24px 62px;
       text-align: center;
     }
 
@@ -66,46 +63,14 @@
       color: #e8f1f8;
     }
 
-    nav {
-      position: sticky;
-      top: 0;
-      z-index: 10;
-      background: rgba(255, 255, 255, 0.96);
-      border-bottom: 1px solid var(--line);
-      backdrop-filter: blur(12px);
-    }
-
-    nav .nav-inner {
-      max-width: 1100px;
-      margin: 0 auto;
-      display: flex;
-      justify-content: center;
-      flex-wrap: wrap;
-      gap: 6px;
-      padding: 12px 16px;
-    }
-
-    nav a {
-      color: var(--primary-dark);
-      text-decoration: none;
-      font-weight: 700;
-      padding: 8px 12px;
-      border-radius: 8px;
-    }
-
-    nav a:hover {
-      background: var(--accent);
-    }
-
     main {
-      max-width: 1100px;
+      max-width: 1050px;
       margin: 0 auto;
       padding: 42px 20px 80px;
     }
 
     section {
       margin-bottom: 34px;
-      scroll-margin-top: 90px;
     }
 
     .card {
@@ -131,11 +96,6 @@
 
     p + p {
       margin-top: 12px;
-    }
-
-    .muted {
-      color: var(--muted);
-      font-size: 0.95rem;
     }
 
     .meta {
@@ -206,7 +166,7 @@
     }
 
     .figure-card {
-      margin-top: 28px;
+      margin-top: 24px;
       border: 1px solid var(--line);
       border-radius: 18px;
       overflow: hidden;
@@ -227,36 +187,6 @@
       font-size: 0.95rem;
     }
 
-    .figure-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-      gap: 18px;
-      margin-top: 18px;
-    }
-
-    .button-row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 12px;
-      margin-top: 24px;
-    }
-
-    .button {
-      display: inline-block;
-      padding: 11px 16px;
-      border-radius: 10px;
-      background: var(--primary);
-      color: white;
-      text-decoration: none;
-      font-weight: 700;
-    }
-
-    .button.secondary {
-      background: white;
-      color: var(--primary);
-      border: 1px solid var(--primary);
-    }
-
     footer {
       background: var(--primary-dark);
       color: #dceaf5;
@@ -274,14 +204,8 @@
         padding: 22px;
       }
 
-      nav .nav-inner {
-        justify-content: flex-start;
-        overflow-x: auto;
-        flex-wrap: nowrap;
-      }
-
-      nav a {
-        white-space: nowrap;
+      .figure-caption {
+        font-size: 0.9rem;
       }
     }
   </style>
@@ -296,20 +220,8 @@
     </p>
   </header>
 
-  <nav>
-    <div class="nav-inner">
-      <a href="#overview">Overview</a>
-      <a href="#motivation">Motivation</a>
-      <a href="#method">Method</a>
-      <a href="#dataset">Dataset</a>
-      <a href="#results">Results</a>
-      <a href="#figures">Figures</a>
-      <a href="#conclusion">Conclusion</a>
-    </div>
-  </nav>
-
   <main>
-    <section id="overview">
+    <section>
       <div class="card">
         <h2>Thesis Overview</h2>
         <p>
@@ -345,25 +257,27 @@
         <div class="figure-card">
           <img src="images/overview.png" alt="SAP-Refiner overall architecture" />
           <div class="figure-caption">
-            <strong>Overall architecture.</strong> SAP-Refiner combines a ConvNeXt-style RNFL encoder, an RNFL-MAE summary branch,
+            <strong>Overall architecture.</strong>
+            SAP-Refiner combines a ConvNeXt-style RNFL encoder, an RNFL-MAE summary branch,
             feature fusion, sector-wise Gaussian heads, ensemble prediction, and uncertainty estimation.
           </div>
         </div>
       </div>
     </section>
 
-    <section id="motivation">
+    <section>
       <div class="card">
         <h2>Motivation</h2>
         <p>
           Glaucoma is characterized by progressive structural damage and visual field loss.
-          In clinical practice, OCT and SAP are interpreted together, but SAP measurements can be affected by test-retest variability,
-          fatigue, learning effects, attentional fluctuation, and fixation instability.
+          In clinical practice, optical coherence tomography and standard automated perimetry are interpreted together.
+          However, SAP measurements can be affected by test-retest variability, fatigue, learning effects,
+          attentional fluctuation, and fixation instability.
         </p>
         <p>
           These factors can obscure the relationship between retinal structure and visual function.
-          SAP-Refiner addresses this issue by using OCT-derived RNFL structural information to generate a more stable and structurally
-          consistent functional representation.
+          SAP-Refiner addresses this issue by using OCT-derived RNFL structural information to generate a more stable
+          and structurally consistent functional representation.
         </p>
 
         <div class="grid-3">
@@ -383,9 +297,28 @@
       </div>
     </section>
 
-    <section id="method">
+    <section>
       <div class="card">
-        <h2>Method</h2>
+        <h2>Data Preprocessing</h2>
+        <p>
+          Raw paired SS-OCT RNFL variables and SAP 24-2 sensitivity variables were formatted into spatially ordered
+          RNFL maps and SAP vectors. The data were cleaned, standardized using training-set statistics, and aligned
+          before model training.
+        </p>
+
+        <div class="figure-card">
+          <img src="images/preprocessing.png" alt="Data preprocessing workflow" />
+          <div class="figure-caption">
+            <strong>Preprocessing workflow.</strong>
+            Raw paired RNFL and SAP data are reorganized, cleaned, standardized, and aligned before training.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="card">
+        <h2>Proposed Method</h2>
         <p>
           SAP-Refiner takes a preprocessed 45 × 60 RNFL thickness map as input and generates outputs for 54 non-blind-spot
           SAP 24-2 locations. For each location, the model estimates a mean refined SAP value and a log-variance term.
@@ -424,42 +357,32 @@
         </div>
 
         <div class="figure-card">
-          <img src="images/preprocessing.png" alt="Data preprocessing workflow" />
+          <img src="images/convnext.png" alt="ConvNeXt-style RNFL encoder" />
           <div class="figure-caption">
-            <strong>Preprocessing workflow.</strong> Raw paired RNFL and SAP data are reorganized, cleaned, standardized, and aligned
-            before model training.
+            <strong>ConvNeXt-style RNFL encoder.</strong>
+            The encoder extracts multi-level spatial RNFL features and generates a 256-dimensional structural representation.
           </div>
         </div>
 
-        <div class="figure-grid">
-          <div class="figure-card">
-            <img src="images/convnext.png" alt="ConvNeXt-style RNFL encoder" />
-            <div class="figure-caption">
-              <strong>ConvNeXt-style RNFL encoder.</strong> The encoder extracts multi-level spatial RNFL features and generates a
-              256-dimensional structural representation.
-            </div>
+        <div class="figure-card">
+          <img src="images/mae.png" alt="RNFL-MAE branch" />
+          <div class="figure-caption">
+            <strong>RNFL-MAE branch.</strong>
+            The masked autoencoder branch learns global RNFL structural context through masked patch reconstruction.
           </div>
+        </div>
 
-          <div class="figure-card">
-            <img src="images/mae.png" alt="RNFL-MAE branch" />
-            <div class="figure-caption">
-              <strong>RNFL-MAE branch.</strong> The masked autoencoder branch learns global RNFL structural context through masked
-              patch reconstruction.
-            </div>
-          </div>
-
-          <div class="figure-card">
-            <img src="images/heads.png" alt="Sector-wise Gaussian refinement heads" />
-            <div class="figure-caption">
-              <strong>Sector-wise Gaussian heads.</strong> Six regional heads estimate refined SAP mean values and log-variance terms
-              for corresponding SAP 24-2 sectors.
-            </div>
+        <div class="figure-card">
+          <img src="images/heads.png" alt="Sector-wise Gaussian refinement heads" />
+          <div class="figure-caption">
+            <strong>Sector-wise Gaussian refinement heads.</strong>
+            Six regional heads estimate refined SAP mean values and log-variance terms for corresponding SAP 24-2 sectors.
           </div>
         </div>
       </div>
     </section>
 
-    <section id="dataset">
+    <section>
       <div class="card">
         <h2>Dataset</h2>
         <p>
@@ -496,7 +419,7 @@
       </div>
     </section>
 
-    <section id="results">
+    <section>
       <div class="card">
         <h2>Key Results</h2>
 
@@ -546,43 +469,7 @@
       </div>
     </section>
 
-    <section id="figures">
-      <div class="card">
-        <h2>Selected Figures</h2>
-        <p>
-          The selected figures summarize the main framework and model components used in SAP-Refiner.
-        </p>
-
-        <div class="figure-grid">
-          <div class="figure-card">
-            <img src="images/overview.png" alt="SAP-Refiner overview" />
-            <div class="figure-caption">Overall SAP-Refiner framework.</div>
-          </div>
-
-          <div class="figure-card">
-            <img src="images/preprocessing.png" alt="Preprocessing workflow" />
-            <div class="figure-caption">Data preprocessing workflow.</div>
-          </div>
-
-          <div class="figure-card">
-            <img src="images/convnext.png" alt="ConvNeXt encoder" />
-            <div class="figure-caption">ConvNeXt-style RNFL encoder.</div>
-          </div>
-
-          <div class="figure-card">
-            <img src="images/mae.png" alt="RNFL-MAE branch" />
-            <div class="figure-caption">RNFL-MAE summary branch.</div>
-          </div>
-
-          <div class="figure-card">
-            <img src="images/heads.png" alt="Gaussian heads" />
-            <div class="figure-caption">Sector-wise Gaussian refinement heads.</div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section id="conclusion">
+    <section>
       <div class="card">
         <h2>Conclusion</h2>
         <p>
@@ -595,13 +482,6 @@
           conventional SAP or OCT. Future validation in independent, multicenter, and longitudinal cohorts will be required
           before clinical implementation.
         </p>
-
-        <div class="button-row">
-          <a class="button" href="#overview">Back to Top</a>
-          <a class="button secondary" href="https://github.com/2z1-0ne/2z1-0ne.github.io" target="_blank" rel="noopener">
-            GitHub Repository
-          </a>
-        </div>
       </div>
     </section>
   </main>
