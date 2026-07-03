@@ -3,155 +3,611 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>VF-RefineNet | Glaucoma AI Project</title>
+  <title>SAP-Refiner | Master's Thesis</title>
+
   <style>
+    :root {
+      --bg: #f6f8fb;
+      --card: #ffffff;
+      --text: #1f2937;
+      --muted: #6b7280;
+      --primary: #234e70;
+      --primary-dark: #17324d;
+      --accent: #e7f0f7;
+      --line: #d9e2ec;
+    }
+
     * {
       box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
     }
 
     body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      line-height: 1.6;
-      background-color: #f7f9fc;
-      color: #222;
+      font-family: Arial, Helvetica, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.7;
     }
 
     header {
-      background-color: #1f3c88;
+      background: linear-gradient(135deg, var(--primary-dark), var(--primary));
       color: white;
-      padding: 20px 0;
+      padding: 72px 24px 64px;
+      text-align: center;
     }
 
-    .container {
-      width: 90%;
-      max-width: 1100px;
-      margin: auto;
+    header .label {
+      display: inline-block;
+      margin-bottom: 18px;
+      padding: 6px 14px;
+      border: 1px solid rgba(255, 255, 255, 0.35);
+      border-radius: 999px;
+      font-size: 0.9rem;
+      color: #dceaf5;
+    }
+
+    header h1 {
+      max-width: 950px;
+      margin: 0 auto 18px;
+      font-size: clamp(2rem, 5vw, 4rem);
+      line-height: 1.15;
+      font-weight: 800;
+    }
+
+    header p {
+      max-width: 850px;
+      margin: 0 auto;
+      font-size: 1.12rem;
+      color: #e8f1f8;
     }
 
     nav {
-      margin-top: 10px;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      background: rgba(255, 255, 255, 0.96);
+      border-bottom: 1px solid var(--line);
+      backdrop-filter: blur(12px);
+    }
+
+    nav .nav-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 6px;
+      padding: 12px 16px;
     }
 
     nav a {
-      color: white;
+      color: var(--primary-dark);
       text-decoration: none;
-      margin-right: 20px;
-      font-weight: bold;
+      font-weight: 700;
+      padding: 8px 12px;
+      border-radius: 8px;
     }
 
     nav a:hover {
-      text-decoration: underline;
+      background: var(--accent);
     }
 
-    .hero {
-      background: white;
-      margin: 30px auto;
-      padding: 40px;
-      border-radius: 12px;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    main {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 42px 20px 80px;
     }
 
-    .hero h2 {
-      color: #1f3c88;
-      margin-top: 0;
+    section {
+      margin-bottom: 34px;
+      scroll-margin-top: 90px;
     }
 
-    .section {
-      background: white;
-      margin: 20px auto;
+    .card {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 18px;
       padding: 30px;
-      border-radius: 12px;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+      box-shadow: 0 12px 30px rgba(15, 23, 42, 0.06);
     }
 
-    .section h3 {
-      color: #1f3c88;
-      margin-top: 0;
+    h2 {
+      margin-bottom: 16px;
+      color: var(--primary-dark);
+      font-size: 1.75rem;
+      line-height: 1.25;
     }
 
-    ul {
-      padding-left: 20px;
+    h3 {
+      margin-bottom: 8px;
+      color: var(--primary);
+      font-size: 1.12rem;
     }
 
-    footer {
-      text-align: center;
-      padding: 20px;
-      background-color: #e9eef7;
-      margin-top: 30px;
-      color: #444;
+    p + p {
+      margin-top: 12px;
+    }
+
+    .muted {
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+
+    .meta {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+      gap: 14px;
+      margin-top: 24px;
+    }
+
+    .meta-item,
+    .stat,
+    .result-item {
+      background: #f8fbfd;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 18px;
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 18px;
+      margin-top: 18px;
+    }
+
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 18px;
+      margin-top: 18px;
+    }
+
+    .stat strong {
+      display: block;
+      color: var(--primary-dark);
+      font-size: 1.9rem;
+      line-height: 1.2;
+      margin-bottom: 6px;
+    }
+
+    .pipeline {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+      gap: 12px;
+      margin-top: 20px;
+    }
+
+    .step {
+      background: var(--accent);
+      border: 1px solid #c8dcec;
+      border-radius: 14px;
+      padding: 16px;
+      min-height: 120px;
+    }
+
+    .step span {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 30px;
+      height: 30px;
+      margin-bottom: 10px;
+      border-radius: 50%;
+      background: var(--primary);
+      color: white;
+      font-weight: 800;
+      font-size: 0.9rem;
+    }
+
+    .figure-card {
+      margin-top: 28px;
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      overflow: hidden;
+      background: #fbfdff;
+      box-shadow: 0 10px 22px rgba(31, 41, 55, 0.06);
+    }
+
+    .figure-card img {
+      width: 100%;
+      display: block;
+      background: white;
+    }
+
+    .figure-caption {
+      padding: 15px 18px;
+      border-top: 1px solid var(--line);
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+
+    .figure-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 18px;
+      margin-top: 18px;
+    }
+
+    .button-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 24px;
     }
 
     .button {
       display: inline-block;
-      margin-top: 15px;
-      padding: 10px 18px;
-      background-color: #1f3c88;
+      padding: 11px 16px;
+      border-radius: 10px;
+      background: var(--primary);
       color: white;
       text-decoration: none;
-      border-radius: 6px;
+      font-weight: 700;
     }
 
-    .button:hover {
-      background-color: #16306d;
+    .button.secondary {
+      background: white;
+      color: var(--primary);
+      border: 1px solid var(--primary);
+    }
+
+    footer {
+      background: var(--primary-dark);
+      color: #dceaf5;
+      text-align: center;
+      padding: 28px 20px;
+      font-size: 0.95rem;
+    }
+
+    @media (max-width: 640px) {
+      header {
+        padding: 54px 18px 48px;
+      }
+
+      .card {
+        padding: 22px;
+      }
+
+      nav .nav-inner {
+        justify-content: flex-start;
+        overflow-x: auto;
+        flex-wrap: nowrap;
+      }
+
+      nav a {
+        white-space: nowrap;
+      }
     }
   </style>
 </head>
+
 <body>
   <header>
-    <div class="container">
-      <h1>VF-RefineNet: Glaucoma AI Project</h1>
-      <p>Optic Nerve Structure-Aware AI for Visual Field Refinement and Glaucoma Discrimination</p>
-      <nav>
-        <a href="index.html">Home</a>
-        <a href="motivation.html">Motivation</a>
-        <a href="method.html">Method</a>
-        <a href="results.html">Results</a>
-        <a href="demo.html">Demo</a>
-        <a href="dataset.html">Dataset</a>
-        <a href="references.html">References</a>
-      </nav>
-    </div>
+    <div class="label">Master's Thesis · Glaucoma AI</div>
+    <h1>Deep Learning-Based Visual Field Refinement Using Structural OCT Information in Glaucoma</h1>
+    <p>
+      SAP-Refiner: an uncertainty-aware deep learning framework for refining standard automated perimetry using structural OCT information.
+    </p>
   </header>
 
-  <main class="container">
-    <section class="hero">
-      <h2>Project Overview</h2>
-      <p>
-        This website presents a research project on glaucoma diagnosis using artificial intelligence.
-        The proposed model, <strong>VF-RefineNet</strong>, refines visual field measurements by using
-        retinal nerve fiber layer (RNFL) thickness maps from OCT images.
-      </p>
-      <p>
-        The goal of this study is to improve the consistency between structural and functional eye exams
-        and to enhance glaucoma discrimination performance.
-      </p>
-      <a class="button" href="method.html">Learn More</a>
+  <nav>
+    <div class="nav-inner">
+      <a href="#overview">Overview</a>
+      <a href="#motivation">Motivation</a>
+      <a href="#method">Method</a>
+      <a href="#dataset">Dataset</a>
+      <a href="#results">Results</a>
+      <a href="#figures">Figures</a>
+      <a href="#conclusion">Conclusion</a>
+    </div>
+  </nav>
+
+  <main>
+    <section id="overview">
+      <div class="card">
+        <h2>Thesis Overview</h2>
+        <p>
+          This website introduces my master's thesis project on glaucoma assessment using deep learning.
+          The proposed framework, <strong>SAP-Refiner</strong>, refines standard automated perimetry 24-2 measurements
+          by incorporating swept-source OCT-derived retinal nerve fiber layer thickness maps.
+        </p>
+        <p>
+          SAP-Refiner is designed to provide a structure-guided representation of visual field sensitivity and predictive uncertainty.
+          The framework is not intended to replace conventional SAP or OCT, but to complement clinical interpretation by improving
+          stability and structure-function consistency.
+        </p>
+
+        <div class="meta">
+          <div class="meta-item">
+            <h3>Author</h3>
+            <p>Jiwon Lee</p>
+          </div>
+          <div class="meta-item">
+            <h3>Degree</h3>
+            <p>Master of Science</p>
+          </div>
+          <div class="meta-item">
+            <h3>Department</h3>
+            <p>Department of Information Convergence Engineering</p>
+          </div>
+          <div class="meta-item">
+            <h3>Institution</h3>
+            <p>Pusan National University</p>
+          </div>
+        </div>
+
+        <div class="figure-card">
+          <img src="images/overview.png" alt="SAP-Refiner overall architecture" />
+          <div class="figure-caption">
+            <strong>Overall architecture.</strong> SAP-Refiner combines a ConvNeXt-style RNFL encoder, an RNFL-MAE summary branch,
+            feature fusion, sector-wise Gaussian heads, ensemble prediction, and uncertainty estimation.
+          </div>
+        </div>
+      </div>
     </section>
 
-    <section class="section">
-      <h3>Why This Research Matters</h3>
-      <p>
-        Glaucoma is one of the leading causes of irreversible blindness. In clinical practice,
-        doctors use both structural imaging and functional testing, but these results often do not match well.
-        This project addresses that problem by using AI to refine visual field data in a clinically meaningful way.
-      </p>
+    <section id="motivation">
+      <div class="card">
+        <h2>Motivation</h2>
+        <p>
+          Glaucoma is characterized by progressive structural damage and visual field loss.
+          In clinical practice, OCT and SAP are interpreted together, but SAP measurements can be affected by test-retest variability,
+          fatigue, learning effects, attentional fluctuation, and fixation instability.
+        </p>
+        <p>
+          These factors can obscure the relationship between retinal structure and visual function.
+          SAP-Refiner addresses this issue by using OCT-derived RNFL structural information to generate a more stable and structurally
+          consistent functional representation.
+        </p>
+
+        <div class="grid-3">
+          <div class="stat">
+            <strong>OCT</strong>
+            <p>Provides structural information such as RNFL thickness.</p>
+          </div>
+          <div class="stat">
+            <strong>SAP</strong>
+            <p>Measures visual field sensitivity but contains response-related variability.</p>
+          </div>
+          <div class="stat">
+            <strong>Goal</strong>
+            <p>Refine SAP into a stable, RNFL-guided functional representation.</p>
+          </div>
+        </div>
+      </div>
     </section>
 
-    <section class="section">
-      <h3>Main Contents of This Website</h3>
-      <ul>
-        <li>Research motivation and background</li>
-        <li>Proposed deep learning method (VF-RefineNet)</li>
-        <li>Experimental results and performance comparison</li>
-        <li>Paper file, source code, demo video, and testing data</li>
-        <li>References and related websites</li>
-      </ul>
+    <section id="method">
+      <div class="card">
+        <h2>Method</h2>
+        <p>
+          SAP-Refiner takes a preprocessed 45 × 60 RNFL thickness map as input and generates outputs for 54 non-blind-spot
+          SAP 24-2 locations. For each location, the model estimates a mean refined SAP value and a log-variance term.
+        </p>
+
+        <div class="pipeline">
+          <div class="step">
+            <span>1</span>
+            <h3>RNFL Input</h3>
+            <p>SS-OCT RNFL thickness map represented as a 45 × 60 image.</p>
+          </div>
+
+          <div class="step">
+            <span>2</span>
+            <h3>Spatial Encoder</h3>
+            <p>ConvNeXt-style encoder extracts local and global RNFL features.</p>
+          </div>
+
+          <div class="step">
+            <span>3</span>
+            <h3>MAE Branch</h3>
+            <p>RNFL-MAE learns complementary structural context using masked reconstruction.</p>
+          </div>
+
+          <div class="step">
+            <span>4</span>
+            <h3>Feature Fusion</h3>
+            <p>ConvNeXt and MAE representations are concatenated.</p>
+          </div>
+
+          <div class="step">
+            <span>5</span>
+            <h3>Gaussian Heads</h3>
+            <p>Sector-wise heads estimate refined SAP and log-variance.</p>
+          </div>
+        </div>
+
+        <div class="figure-card">
+          <img src="images/preprocessing.png" alt="Data preprocessing workflow" />
+          <div class="figure-caption">
+            <strong>Preprocessing workflow.</strong> Raw paired RNFL and SAP data are reorganized, cleaned, standardized, and aligned
+            before model training.
+          </div>
+        </div>
+
+        <div class="figure-grid">
+          <div class="figure-card">
+            <img src="images/convnext.png" alt="ConvNeXt-style RNFL encoder" />
+            <div class="figure-caption">
+              <strong>ConvNeXt-style RNFL encoder.</strong> The encoder extracts multi-level spatial RNFL features and generates a
+              256-dimensional structural representation.
+            </div>
+          </div>
+
+          <div class="figure-card">
+            <img src="images/mae.png" alt="RNFL-MAE branch" />
+            <div class="figure-caption">
+              <strong>RNFL-MAE branch.</strong> The masked autoencoder branch learns global RNFL structural context through masked
+              patch reconstruction.
+            </div>
+          </div>
+
+          <div class="figure-card">
+            <img src="images/heads.png" alt="Sector-wise Gaussian refinement heads" />
+            <div class="figure-caption">
+              <strong>Sector-wise Gaussian heads.</strong> Six regional heads estimate refined SAP mean values and log-variance terms
+              for corresponding SAP 24-2 sectors.
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="dataset">
+      <div class="card">
+        <h2>Dataset</h2>
+        <p>
+          The study used a retrospective clinical dataset of paired SS-OCT RNFL thickness maps and SAP 24-2 measurements.
+          The data were split at the patient level to prevent patient-level data leakage.
+        </p>
+
+        <div class="grid-3">
+          <div class="stat">
+            <strong>2,503</strong>
+            <p>Total examinations</p>
+          </div>
+          <div class="stat">
+            <strong>1,520</strong>
+            <p>Unique patients</p>
+          </div>
+          <div class="stat">
+            <strong>901</strong>
+            <p>Non-glaucomatous examinations</p>
+          </div>
+          <div class="stat">
+            <strong>1,602</strong>
+            <p>Glaucomatous examinations</p>
+          </div>
+          <div class="stat">
+            <strong>54</strong>
+            <p>SAP 24-2 non-blind-spot locations</p>
+          </div>
+          <div class="stat">
+            <strong>45 × 60</strong>
+            <p>RNFL thickness map size</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="results">
+      <div class="card">
+        <h2>Key Results</h2>
+
+        <div class="grid-2">
+          <div class="result-item">
+            <h3>Stronger Structure-Function Consistency</h3>
+            <p>
+              Refined SAP showed stronger agreement with RNFL thickness than original SAP in global and regional analyses.
+            </p>
+          </div>
+
+          <div class="result-item">
+            <h3>Severity-wise Robustness</h3>
+            <p>
+              The improved structure-function consistency was observed across normal, early, moderate, and advanced groups.
+            </p>
+          </div>
+
+          <div class="result-item">
+            <h3>Predictive Uncertainty</h3>
+            <p>
+              Predictive uncertainty was associated with glaucoma severity and original-refined SAP discrepancy.
+            </p>
+          </div>
+
+          <div class="result-item">
+            <h3>Reduced Repeated-exam Variability</h3>
+            <p>
+              Refined SAP reduced within-patient repeated-exam variability compared with original SAP.
+            </p>
+          </div>
+
+          <div class="result-item">
+            <h3>Improved Discrimination</h3>
+            <p>
+              Refined SAP-derived variables improved glaucoma discrimination compared with original SAP-derived variables.
+            </p>
+          </div>
+
+          <div class="result-item">
+            <h3>Ablation Findings</h3>
+            <p>
+              Sector-wise heads, RNFL-MAE, feature concatenation, and seed ensembling contributed to model performance.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="figures">
+      <div class="card">
+        <h2>Selected Figures</h2>
+        <p>
+          The selected figures summarize the main framework and model components used in SAP-Refiner.
+        </p>
+
+        <div class="figure-grid">
+          <div class="figure-card">
+            <img src="images/overview.png" alt="SAP-Refiner overview" />
+            <div class="figure-caption">Overall SAP-Refiner framework.</div>
+          </div>
+
+          <div class="figure-card">
+            <img src="images/preprocessing.png" alt="Preprocessing workflow" />
+            <div class="figure-caption">Data preprocessing workflow.</div>
+          </div>
+
+          <div class="figure-card">
+            <img src="images/convnext.png" alt="ConvNeXt encoder" />
+            <div class="figure-caption">ConvNeXt-style RNFL encoder.</div>
+          </div>
+
+          <div class="figure-card">
+            <img src="images/mae.png" alt="RNFL-MAE branch" />
+            <div class="figure-caption">RNFL-MAE summary branch.</div>
+          </div>
+
+          <div class="figure-card">
+            <img src="images/heads.png" alt="Gaussian heads" />
+            <div class="figure-caption">Sector-wise Gaussian refinement heads.</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="conclusion">
+      <div class="card">
+        <h2>Conclusion</h2>
+        <p>
+          SAP-Refiner provides an uncertainty-aware, structure-guided visual field refinement framework for glaucoma.
+          Refined SAP demonstrated stronger structure-function consistency with RNFL thickness, reduced repeated-exam variability,
+          and improved glaucoma discrimination using SAP-derived variables.
+        </p>
+        <p>
+          Refined SAP should be interpreted as a complementary structure-guided representation rather than a replacement for
+          conventional SAP or OCT. Future validation in independent, multicenter, and longitudinal cohorts will be required
+          before clinical implementation.
+        </p>
+
+        <div class="button-row">
+          <a class="button" href="#overview">Back to Top</a>
+          <a class="button secondary" href="https://github.com/2z1-0ne/2z1-0ne.github.io" target="_blank" rel="noopener">
+            GitHub Repository
+          </a>
+        </div>
+      </div>
     </section>
   </main>
 
   <footer>
-    <p>2025 Glaucoma AI Project Website</p>
+    <p>© 2026 Jiwon Lee · Master's Thesis Website</p>
   </footer>
 </body>
 </html>
